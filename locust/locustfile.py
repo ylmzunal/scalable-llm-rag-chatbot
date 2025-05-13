@@ -3,25 +3,28 @@ import json
 import random
 from locust import HttpUser, task, between
 
-# Sample questions for load testing
+# Sample questions tailored for the SimpleMLLService's pre-defined responses
 SAMPLE_QUESTIONS = [
-    "What is the capital of France?",
-    "How does a transformer neural network work?",
-    "Explain the concept of retrieval-augmented generation.",
-    "What are the benefits of Kubernetes for scaling applications?",
-    "How can I implement horizontal pod autoscaling in Kubernetes?",
-    "What is the difference between a StatefulSet and a Deployment in Kubernetes?",
-    "Explain the concept of a service mesh.",
-    "What are the best practices for securing a Kubernetes cluster?",
-    "How does vLLM optimize LLM inference?",
-    "What is the role of a vector database in a RAG system?"
+    "What is LLM?",
+    "Explain LLM",
+    "What is a large language model?",
+    "What is RAG?",
+    "What is retrieval augmented generation?",
+    "How does RAG work?",
+    "What is Kubernetes?",
+    "Explain Kubernetes",
+    "Kubernetes scaling",
+    "What is AI?",
+    "What is a chatbot?",
+    "What is this project?",
+    "How does this work?"
 ]
 
 class ChatbotUser(HttpUser):
     """
     Simulates a user interacting with the chatbot API.
     """
-    wait_time = between(3, 10)  # Wait between 3-10 seconds between tasks
+    wait_time = between(1, 3)  # Wait between 1-3 seconds between tasks (faster for local testing)
     
     def on_start(self):
         """
@@ -69,8 +72,7 @@ class ChatbotUser(HttpUser):
                         # Add assistant response to conversation history
                         self.conversation_history.append({"role": "assistant", "content": data["response"]})
                         
-                        # Log response time for monitoring
-                        response.metadata["response_time"] = duration
+                        # No need to manually track response time, Locust does this automatically
                         
                         # Mark as success
                         response.success()
