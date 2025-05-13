@@ -1,0 +1,22 @@
+fastapi==0.104.1
+uvicorn==0.23.2
+pydantic==2.4.2
+# vllm replaced with simpler alternatives for local development
+transformers==4.34.0
+accelerate==0.24.1
+sentence-transformers==2.2.2
+langchain==0.0.312
+langchain-community==0.0.9
+chromadb==0.4.18
+python-dotenv==1.0.0
+locust==2.18.0
+kubernetes==28.1.0
+torch>=2.2.0
+numpy==1.24.3
+pandas==2.0.3
+pytest==7.4.0
+httpx==0.25.0
+python-multipart==0.0.6
+google-cloud-storage==2.10.0
+google-cloud-container==2.35.0
+google-auth==2.23.3 
