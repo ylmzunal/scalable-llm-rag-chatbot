@@ -9,7 +9,12 @@ logger = logging.getLogger(__name__)
 
 class LLMService:
     def __init__(self):
-        self.model_id = os.environ.get("MODEL_ID", "mistralai/Mistral-7B-Instruct-v0.2")
+        # Use a different model that doesn't require authentication
+        self.model_id = os.environ.get("MODEL_ID", "meta-llama/Llama-2-7b-chat-hf")
+        # Fallback to an even more accessible model if the above still has issues
+        if os.environ.get("USE_FALLBACK", "false").lower() == "true":
+            self.model_id = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+        
         self.device = "mps" if torch.backends.mps.is_available() else "cpu"
         logger.info(f"LLM Service initializing with model: {self.model_id} on device: {self.device}")
         
@@ -52,9 +57,17 @@ class LLMService:
             
             # Format prompt with system prompt if provided
             if system_prompt:
-                formatted_prompt = f"<s>[INST] {system_prompt} [/INST]</s>[INST] {prompt} [/INST]"
+                if "TinyLlama" in self.model_id:
+                    # TinyLlama format
+                    formatted_prompt = f"<|system|>\n{system_prompt}\n<|user|>\n{prompt}\n<|assistant|>"
+                else:
+                    # Llama 2 format
+                    formatted_prompt = f"<s>[INST] <<SYS>>\n{system_prompt}\n<</SYS>>\n\n{prompt} [/INST]"
             else:
-                formatted_prompt = f"<s>[INST] {prompt} [/INST]"
+                if "TinyLlama" in self.model_id:
+                    formatted_prompt = f"<|user|>\n{prompt}\n<|assistant|>"
+                else:
+                    formatted_prompt = f"<s>[INST] {prompt} [/INST]"
             
             # Generate response
             logger.debug(f"Generating response for prompt: {prompt[:50]}...")

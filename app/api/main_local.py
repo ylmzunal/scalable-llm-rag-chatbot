@@ -1,12 +1,13 @@
 import os
 from typing import List, Dict, Any, Optional
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 import logging
 from contextlib import asynccontextmanager
 
-from app.api.llm_service_local import get_llm_engine
+from app.api.llm_service_simple import get_llm_engine
 from app.api.vector_db import get_vector_db
 from app.api.rag_pipeline import RAGPipeline
 from app.api.documents import router as documents_router
@@ -65,6 +66,15 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Add CORS middleware to allow cross-origin requests from the frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for development
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods
+    allow_headers=["*"],  # Allow all headers
+)
+
 # Include routers
 app.include_router(documents_router, tags=["documents"])
 
@@ -89,6 +99,9 @@ async def chat(request: ChatRequest):
         if not user_message:
             raise HTTPException(status_code=400, detail="No user message found")
         
+        # Log the user message for debugging
+        logger.info(f"Processing user message: {user_message}")
+        
         # Process with RAG pipeline
         if request.use_rag:
             response, retrieved_docs = await app.state.rag_pipeline.generate_response(
@@ -96,6 +109,7 @@ async def chat(request: ChatRequest):
                 request.temperature,
                 request.max_tokens
             )
+            logger.info(f"Generated RAG response: {response[:50]}...")
             return ChatResponse(
                 response=response,
                 retrieved_documents=retrieved_docs
@@ -107,6 +121,7 @@ async def chat(request: ChatRequest):
                 temperature=request.temperature,
                 max_tokens=request.max_tokens
             )
+            logger.info(f"Generated direct response: {response[:50]}...")
             return ChatResponse(response=response)
             
     except Exception as e:
