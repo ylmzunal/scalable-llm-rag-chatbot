@@ -1,76 +1,89 @@
 # Scalable LLM RAG Chatbot with Kubernetes
 
-This project demonstrates a scalable LLM-based RAG (Retrieval-Augmented Generation) chatbot deployed on Kubernetes infrastructure. It uses Mistral-7B as the base model and vLLM for efficient serving.
+A scalable RAG (Retrieval-Augmented Generation) chatbot built with Next.js, FastAPI, and deployed on Kubernetes.
 
-## Project Components
+## Features
 
-- **LLM Service**: Mistral-7B model served using vLLM for efficient inference
-- **Vector Database**: ChromaDB for storing document embeddings for retrieval
-- **RAG Pipeline**: Enhances LLM responses with relevant context from the vector database
-- **Web Interface**: Next.js frontend for interacting with the chatbot
-- **Kubernetes Deployment**: Scalable infrastructure with autoscaling capabilities
-- **Load Testing**: Locust configuration for performance testing
+- **RAG Architecture**: Combines retrieval-based and generative approaches for more accurate responses
+- **Scalable Infrastructure**: Kubernetes-based deployment for scalability and resilience
+- **Modern UI**: Clean, responsive interface built with Next.js and TailwindCSS
+- **API Backend**: FastAPI service for handling LLM interactions
+- **Vector Database**: ChromaDB for efficient similarity search
 
 ## Prerequisites
 
-- Docker Desktop with Kubernetes enabled or any Kubernetes cluster
-- kubectl
-- Python 3.10+
+- Docker Desktop with Kubernetes enabled
+- kubectl command-line tool
+- Node.js (for local development)
+- Python 3.10+ (for local development)
 
-## Setup Instructions
+## Quick Start
 
-1. Clone this repository
-2. Build the Docker images:
+### Running with Kubernetes
+
+1. Clone this repository:
    ```bash
-   ./build_local_images.sh
+   git clone https://github.com/yourusername/scalable-llm-rag-chatbot.git
+   cd scalable-llm-rag-chatbot
    ```
-3. Deploy to Kubernetes:
-   ```bash
-   ./run_local_k8s.sh
-   ```
-4. Access the application:
-   - Frontend: http://localhost:3000
-   - API: http://localhost:8000
-   - Vector DB: http://localhost:8080
 
-## Architecture
+2. Run the application:
+   ```bash
+   ./run_kubernetes.sh
+   ```
+
+   This script will:
+   - Build the Docker images
+   - Deploy the application to Kubernetes
+   - Set up port forwarding
+
+3. Access the application:
+   - Frontend: http://localhost:30300
+   - API: http://localhost:30800
+
+4. Clean up when done:
+   ```bash
+   ./cleanup_all.sh
+   ```
+
+## Project Structure
 
 ```
-                                 ┌───────────────┐
-                                 │   Next.js UI  │
-                                 └───────┬───────┘
-                                         │
-                                         ▼
-┌───────────────┐              ┌───────────────┐
-│  ChromaDB     │◄────────────►│  FastAPI      │
-└───────────────┘              └───────┬───────┘
-                                       │
-                                       ▼
-                               ┌───────────────┐
-                               │  LLM Service  │
-                               │  (Mistral-7B) │
-                               └───────────────┘
+.
+├── app/                      # Application code
+│   ├── api/                  # FastAPI backend
+│   └── frontend/             # Next.js frontend
+├── k8s/                      # Kubernetes configurations
+│   └── local/                # Local development configuration
+├── vector_db/               # Vector database files
+├── Dockerfile               # Backend service Dockerfile
+├── Dockerfile.frontend      # Frontend Dockerfile
+├── build_local_images.sh    # Script to build Docker images
+├── run_kubernetes.sh        # Script to deploy to Kubernetes
+└── cleanup_all.sh           # Cleanup script
 ```
 
-## Kubernetes Configuration
+## Development
 
-The application is deployed using Kubernetes with Kustomize for environment-specific configurations:
+### Local Development
 
-- `k8s/base/`: Base Kubernetes resources
-- `k8s/overlays/dev/`: Development environment configuration
-- `k8s/overlays/prod/`: Production environment configuration
+For local development without Kubernetes, you can run the frontend and backend separately:
 
-See the [Kubernetes README](k8s/README.md) for detailed information on the Kubernetes setup.
+#### Backend (FastAPI)
 
-## Load Testing
+```bash
+cd app/api
+python -m uvicorn main_local:app --reload --host 0.0.0.0 --port 8000
+```
 
-The project includes Locust configuration for load testing the deployed application. This helps measure performance metrics such as:
+#### Frontend (Next.js)
 
-- Response time under various loads
-- Maximum throughput
-- System stability under heavy traffic
-- Resource utilization patterns
+```bash
+cd app/frontend
+npm install
+npm run dev
+```
 
 ## License
 
-MIT 
+[MIT License](LICENSE) 

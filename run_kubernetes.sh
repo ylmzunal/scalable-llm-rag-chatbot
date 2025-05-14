@@ -18,7 +18,7 @@ echo "Building Docker images..."
 
 # Apply Kubernetes configuration
 echo "Deploying to Kubernetes..."
-kubectl apply -f k8s/simple_deployment.yaml
+kubectl apply -f k8s/local/deployment.yaml
 
 # Wait for pods to be ready
 echo "Waiting for pods to be ready..."
@@ -38,4 +38,4 @@ echo ""
 
 # Clean up
 echo "Cleaning up..."
-kubectl delete -f k8s/simple_deployment.yaml 
+kubectl delete -f k8s/local/deployment.yaml 
