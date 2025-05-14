@@ -76,7 +76,7 @@ spec:
     spec:
       containers:
       - name: vector-db
-        image: chromadb/chroma:0.4.18
+        image: chromadb/chroma:0.4.15
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
