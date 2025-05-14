@@ -30,7 +30,10 @@ export default function Home() {
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  
+  // Get API URL from environment variable or use localhost:30800
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:30800';
+  console.log('API URL:', apiUrl);
 
   // Auto-scroll to bottom of messages
   useEffect(() => {
