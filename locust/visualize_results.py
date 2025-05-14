@@ -21,26 +21,38 @@ def setup_styling():
 def load_stats_history(file_path):
     """Load the stats_history.csv file into a DataFrame"""
     df = pd.read_csv(file_path)
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
+
+    # Timestamp sütununu bul ve normalize et
+    timestamp_col = None
+    for col in df.columns:
+        if col.lower() == 'timestamp':
+            timestamp_col = col
+            break
+    
+    if timestamp_col is None:
+        raise KeyError("CSV dosyasında timestamp sütunu bulunamadı.")
+
+    df['timestamp'] = pd.to_datetime(df[timestamp_col])
+
     return df
 
 def generate_response_time_chart(df, output_dir, prefix):
     """Generate response time chart from stats_history data"""
     # Filter only for /chat endpoint
     chat_df = df[df['Name'] == '/chat']
-    
+
     plt.figure()
-    plt.plot(chat_df['timestamp'], chat_df['Median Response Time'], label='Median')
-    plt.plot(chat_df['timestamp'], chat_df['95% Response Time'], label='95th Percentile')
-    plt.plot(chat_df['timestamp'], chat_df['99% Response Time'], label='99th Percentile')
-    
+    plt.plot(chat_df['timestamp'], chat_df['50%'], label='Median (50%)')
+    plt.plot(chat_df['timestamp'], chat_df['95%'], label='95th Percentile')
+    plt.plot(chat_df['timestamp'], chat_df['99%'], label='99th Percentile')
+
     plt.title('Response Time - /chat endpoint')
     plt.xlabel('Time')
     plt.ylabel('Response Time (ms)')
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    
+
     output_file = os.path.join(output_dir, f"{prefix}_response_times.png")
     plt.savefig(output_file, dpi=300)
     print(f"Saved response time chart to {output_file}")
@@ -90,40 +102,39 @@ def generate_users_chart(df, output_dir, prefix):
 def generate_endpoint_comparison(df, output_dir, prefix):
     """Generate a bar chart comparing different endpoints"""
     # Aggregate data by endpoint
-    endpoint_df = df.groupby('Name')['Median Response Time'].mean().reset_index()
-    
+    endpoint_df = df.groupby('Name')['50%'].mean().reset_index()
+
     plt.figure()
-    ax = sns.barplot(x='Name', y='Median Response Time', data=endpoint_df)
-    
+    ax = sns.barplot(x='Name', y='50%', data=endpoint_df)
+
     # Add values on top of bars
-    for i, v in enumerate(endpoint_df['Median Response Time']):
+    for i, v in enumerate(endpoint_df['50%']):
         ax.text(i, v + 5, f"{v:.1f}", ha='center')
-    
+
     plt.title('Median Response Time by Endpoint')
     plt.xlabel('Endpoint')
     plt.ylabel('Median Response Time (ms)')
     plt.tight_layout()
-    
+
     output_file = os.path.join(output_dir, f"{prefix}_endpoint_comparison.png")
     plt.savefig(output_file, dpi=300)
     print(f"Saved endpoint comparison chart to {output_file}")
     plt.close()
 
-def process_test_results(test_dir, output_dir):
-    """Process a single test's results directory"""
-    stats_history_path = os.path.join(test_dir, "stats_history.csv")
-    if not os.path.exists(stats_history_path):
-        print(f"No stats_history.csv found in {test_dir}, skipping...")
+def process_test_results(test_file, output_dir):
+    """Process a single test's stats_history.csv file"""
+    if not os.path.exists(test_file):
+        print(f"{test_file} not found, skipping...")
         return
-    
-    # Extract test name from directory
-    test_name = os.path.basename(test_dir).split("_stats")[0]
+
+    # Extract test name from file name
+    test_name = os.path.basename(test_file).replace("_stats_history.csv", "")
     prefix = test_name
-    
+
     # Load data
     print(f"Processing test results for {test_name}...")
-    df = load_stats_history(stats_history_path)
-    
+    df = load_stats_history(test_file)
+
     # Generate charts
     generate_response_time_chart(df, output_dir, prefix)
     generate_requests_per_second_chart(df, output_dir, prefix)
@@ -209,27 +220,27 @@ def main():
     parser.add_argument('--output-dir', default='load_test_charts',
                         help='Directory to save charts')
     args = parser.parse_args()
-    
+
     # Create output directory
     os.makedirs(args.output_dir, exist_ok=True)
-    
+
     # Setup plot styling
     setup_styling()
-    
-    # Find all CSV reports (stats_history files)
-    csv_dirs = glob.glob(f"{args.results_dir}/*_stats")
-    
-    if not csv_dirs:
+
+    # Find all stats_history.csv files directly
+    csv_files = glob.glob(f"{args.results_dir}/*_stats_history.csv")
+
+    if not csv_files:
         print(f"No test results found in {args.results_dir}")
         return
-    
-    # Process each test
-    for csv_dir in csv_dirs:
-        process_test_results(csv_dir, args.output_dir)
-    
+
+    # Process each CSV file directly
+    for csv_file in csv_files:
+        process_test_results(csv_file, args.output_dir)
+
     # Generate comparison chart
-    generate_comparison_chart(csv_dirs, args.output_dir)
-    
+    generate_comparison_chart(csv_files, args.output_dir)
+
     print(f"All charts have been saved to {args.output_dir}")
     print("You can use these charts in your presentation to demonstrate the performance of your RAG chatbot")
 

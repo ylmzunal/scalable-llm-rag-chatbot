@@ -5,37 +5,44 @@ This project demonstrates a scalable LLM-based RAG (Retrieval-Augmented Generati
 ## Project Components
 
 - **LLM Service**: Mistral-7B model served using vLLM for efficient inference
-- **Vector Database**: Stores document embeddings for retrieval
+- **Vector Database**: ChromaDB for storing document embeddings for retrieval
 - **RAG Pipeline**: Enhances LLM responses with relevant context from the vector database
-- **Web Interface**: Simple UI for interacting with the chatbot
+- **Web Interface**: Next.js frontend for interacting with the chatbot
 - **Kubernetes Deployment**: Scalable infrastructure with autoscaling capabilities
 - **Load Testing**: Locust configuration for performance testing
 
 ## Prerequisites
 
-- Docker
-- Kubernetes cluster (minikube, kind, or cloud provider)
+- Docker Desktop with Kubernetes enabled or any Kubernetes cluster
 - kubectl
-- Helm
-- Python 3.9+
+- Python 3.10+
 
 ## Setup Instructions
 
 1. Clone this repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Deploy to Kubernetes: `kubectl apply -f k8s/`
-4. Run load tests: `locust -f locust/locustfile.py`
+2. Build the Docker images:
+   ```bash
+   ./build_local_images.sh
+   ```
+3. Deploy to Kubernetes:
+   ```bash
+   ./run_local_k8s.sh
+   ```
+4. Access the application:
+   - Frontend: http://localhost:3000
+   - API: http://localhost:8000
+   - Vector DB: http://localhost:8080
 
 ## Architecture
 
 ```
                                  ┌───────────────┐
-                                 │   Web UI      │
+                                 │   Next.js UI  │
                                  └───────┬───────┘
                                          │
                                          ▼
 ┌───────────────┐              ┌───────────────┐
-│  Vector DB    │◄────────────►│  API Gateway  │
+│  ChromaDB     │◄────────────►│  FastAPI      │
 └───────────────┘              └───────┬───────┘
                                        │
                                        ▼
@@ -44,6 +51,16 @@ This project demonstrates a scalable LLM-based RAG (Retrieval-Augmented Generati
                                │  (Mistral-7B) │
                                └───────────────┘
 ```
+
+## Kubernetes Configuration
+
+The application is deployed using Kubernetes with Kustomize for environment-specific configurations:
+
+- `k8s/base/`: Base Kubernetes resources
+- `k8s/overlays/dev/`: Development environment configuration
+- `k8s/overlays/prod/`: Production environment configuration
+
+See the [Kubernetes README](k8s/README.md) for detailed information on the Kubernetes setup.
 
 ## Load Testing
 

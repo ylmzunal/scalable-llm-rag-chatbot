@@ -8,32 +8,19 @@ resources:
 
 patches:
   - path: patches/replicas-patch.yaml
+  - path: patches/llm-service-local-patch.yaml
+  - path: patches/direct-image-patch.yaml
+  - path: patches/remove-gpu.yaml
 
 configMapGenerator:
   - name: dev-config
     literals:
       - ENVIRONMENT=development
 
-vars:
-  - name: LLM_SERVICE_IMAGE
-    objref:
-      kind: Deployment
-      name: llm-service
-      apiVersion: apps/v1
-    fieldref:
-      fieldpath: spec.template.spec.containers[0].image
-  - name: FRONTEND_IMAGE
-    objref:
-      kind: Deployment
-      name: frontend
-      apiVersion: apps/v1
-    fieldref:
-      fieldpath: spec.template.spec.containers[0].image
-
 images:
-  - name: ${LLM_SERVICE_IMAGE}
-    newName: rag-chatbot/llm-service
-    newTag: dev
   - name: ${FRONTEND_IMAGE}
     newName: rag-chatbot/frontend
+    newTag: dev
+  - name: ${LLM_SERVICE_IMAGE}
+    newName: rag-chatbot/llm-service
     newTag: dev 

@@ -120,7 +120,7 @@ table.stats tr.total td {
 
         <div class="info">
             
-            <p>During: <span class="l10n datetime">2025-05-13 23:14:24</span> - <span class="l10n datetime">2025-05-13 23:15:23</span></p>
+            <p>During: <span class="l10n datetime">2025-05-14 00:42:01</span> - <span class="l10n datetime">2025-05-14 00:43:01</span></p>
             <p>Target Host: <span>http://localhost:8000</span></p>
             <p>Script: <span>locustfile.py</span></p>
         </div>
@@ -147,39 +147,39 @@ table.stats tr.total td {
                         <tr>
                             <td>POST</td>
                             <td>/chat</td>
-                            <td>815</td>
+                            <td>837</td>
                             <td>0</td>
-                            <td>999</td>
-                            <td>512</td>
-                            <td>1547</td>
-                            <td>327</td>
-                            <td>13.6</td>
+                            <td>1018</td>
+                            <td>510</td>
+                            <td>1578</td>
+                            <td>335</td>
+                            <td>14.0</td>
                             <td>0.0</td>
                         </tr>
                     
                         <tr>
                             <td>GET</td>
                             <td>/health</td>
-                            <td>228</td>
+                            <td>208</td>
                             <td>0</td>
                             <td>7</td>
                             <td>0</td>
-                            <td>105</td>
+                            <td>115</td>
                             <td>42</td>
-                            <td>3.8</td>
+                            <td>3.5</td>
                             <td>0.0</td>
                         </tr>
                     
                         <tr class="total">
                             <td></td>
                             <td>Aggregated</td>
-                            <td>1043</td>
+                            <td>1045</td>
                             <td>0</td>
-                            <td>782</td>
+                            <td>817</td>
                             <td>0</td>
-                            <td>1547</td>
-                            <td>265</td>
-                            <td>17.4</td>
+                            <td>1578</td>
+                            <td>276</td>
+                            <td>17.5</td>
                             <td>0.0</td>
                         </tr>
                     
@@ -209,14 +209,14 @@ table.stats tr.total td {
                         <tr>
                             <td>POST</td>
                             <td>/chat</td>
-                            <td>990</td>
+                            <td>1000</td>
                             <td>1100</td>
                             <td>1200</td>
                             <td>1300</td>
                             <td>1400</td>
                             <td>1500</td>
                             <td>1500</td>
-                            <td>1500</td>
+                            <td>1600</td>
                         </tr>
                     
                         <tr>
@@ -225,24 +225,24 @@ table.stats tr.total td {
                             <td>2</td>
                             <td>3</td>
                             <td>4</td>
-                            <td>10</td>
-                            <td>21</td>
-                            <td>39</td>
-                            <td>74</td>
-                            <td>110</td>
+                            <td>6</td>
+                            <td>17</td>
+                            <td>37</td>
+                            <td>75</td>
+                            <td>120</td>
                         </tr>
                     
                         <tr class="total">
                             <td></td>
                             <td>Aggregated</td>
-                            <td>850</td>
-                            <td>980</td>
+                            <td>890</td>
+                            <td>1000</td>
                             <td>1100</td>
-                            <td>1200</td>
+                            <td>1300</td>
                             <td>1400</td>
                             <td>1400</td>
                             <td>1500</td>
-                            <td>1500</td>
+                            <td>1600</td>
                         </tr>
                     
                 </tbody>
@@ -543,12 +543,12 @@ function fillTasksFromRequest() {
     <script>
         
 var stats_history = {
-    "time": ["23:14:29", "23:14:34", "23:14:39", "23:14:44", "23:14:49", "23:14:54", "23:14:59", "23:15:04", "23:15:09", "23:15:14", "23:15:19"].map(server_time => new Date(new Date().setUTCHours(...(server_time.split(":")))).toLocaleTimeString()),
+    "time": ["00:42:06", "00:42:11", "00:42:16", "00:42:21", "00:42:26", "00:42:31", "00:42:36", "00:42:41", "00:42:46", "00:42:51", "00:42:56"].map(server_time => new Date(new Date().setUTCHours(...(server_time.split(":")))).toLocaleTimeString()),
     "user_count": [{"value": 50}, {"value": 50}, {"value": 50}, {"value": 50}, {"value": 50}, {"value": 50}, {"value": 50}, {"value": 50}, {"value": 50}, {"value": 50}, {"value": 50}],
-    "current_rps": [{"users": 50, "value": 8.666666666666666}, {"users": 50, "value": 14.5}, {"users": 50, "value": 17.9}, {"users": 50, "value": 18.0}, {"users": 50, "value": 17.6}, {"users": 50, "value": 17.3}, {"users": 50, "value": 18.1}, {"users": 50, "value": 17.8}, {"users": 50, "value": 17.8}, {"users": 50, "value": 17.8}, {"users": 50, "value": 17.8}],
+    "current_rps": [{"users": 50, "value": 8.0}, {"users": 50, "value": 13.375}, {"users": 50, "value": 17.0}, {"users": 50, "value": 18.0}, {"users": 50, "value": 18.3}, {"users": 50, "value": 17.8}, {"users": 50, "value": 18.1}, {"users": 50, "value": 18.2}, {"users": 50, "value": 18.2}, {"users": 50, "value": 18.0}, {"users": 50, "value": 17.8}],
     "current_fail_per_sec": [{"users": 50, "value": 0}, {"users": 50, "value": 0}, {"users": 50, "value": 0}, {"users": 50, "value": 0}, {"users": 50, "value": 0}, {"users": 50, "value": 0}, {"users": 50, "value": 0}, {"users": 50, "value": 0}, {"users": 50, "value": 0}, {"users": 50, "value": 0}, {"users": 50, "value": 0}],
-    "response_time_percentile_1": [{"users": 50, "value": 1000.0}, {"users": 50, "value": 910.0}, {"users": 50, "value": 890.0}, {"users": 50, "value": 880.0}, {"users": 50, "value": 770.0}, {"users": 50, "value": 790.0}, {"users": 50, "value": 800.0}, {"users": 50, "value": 840.0}, {"users": 50, "value": 940.0}, {"users": 50, "value": 890.0}, {"users": 50, "value": 930.0}],
-    "response_time_percentile_2": [{"users": 50, "value": 1400.0}, {"users": 50, "value": 1400.0}, {"users": 50, "value": 1400.0}, {"users": 50, "value": 1400.0}, {"users": 50, "value": 1400.0}, {"users": 50, "value": 1400.0}, {"users": 50, "value": 1500.0}, {"users": 50, "value": 1500.0}, {"users": 50, "value": 1500.0}, {"users": 50, "value": 1500.0}, {"users": 50, "value": 1500.0}],
+    "response_time_percentile_1": [{"users": 50, "value": 860.0}, {"users": 50, "value": 930.0}, {"users": 50, "value": 950.0}, {"users": 50, "value": 970.0}, {"users": 50, "value": 990.0}, {"users": 50, "value": 860.0}, {"users": 50, "value": 780.0}, {"users": 50, "value": 860.0}, {"users": 50, "value": 850.0}, {"users": 50, "value": 880.0}, {"users": 50, "value": 910.0}],
+    "response_time_percentile_2": [{"users": 50, "value": 1400.0}, {"users": 50, "value": 1400.0}, {"users": 50, "value": 1400.0}, {"users": 50, "value": 1500.0}, {"users": 50, "value": 1500.0}, {"users": 50, "value": 1500.0}, {"users": 50, "value": 1500.0}, {"users": 50, "value": 1400.0}, {"users": 50, "value": 1400.0}, {"users": 50, "value": 1500.0}, {"users": 50, "value": 1500.0}],
     "markers": [],
 };
         var percentile1 = 0.5

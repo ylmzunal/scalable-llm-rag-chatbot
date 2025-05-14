@@ -25,7 +25,8 @@ run_load_test() {
         -r $spawn_rate \
         -t $duration \
         --html=load_test_reports/${name}.html \
-        --csv=load_test_reports/${name}
+        --csv=load_test_reports/${name} \
+        --csv-full-history
         
     echo "Test complete: $name. Report saved to load_test_reports/${name}.html"
     echo ""
@@ -50,4 +51,4 @@ run_load_test 100 20 "1m" "peak_load"
 run_load_test 20 5 "5m" "endurance_test"
 
 echo "=== All Load Tests Completed ==="
-echo "Reports are available in the load_test_reports directory" 
+echo "Reports are available in the load_test_reports directory"
